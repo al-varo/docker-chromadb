@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  chromadb:
+    image: chromadb/chroma
+    container_name: chromadb
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data/chromadb:/chroma
+    restart: always
+
+  app:
+    build: .
+    container_name: langchain_app
+    depends_on:
+      - chromadb
+    environment:
+      - OLLAMA_SERVER=http://192.168.68.204:11434  # Ubah dengan alamat server Ollama
+      - CHROMA_DB=http://chromadb:8000
+    volumes:
+      - ./data:/app/data
+      - ./scripts:/app/scripts
+    command: ["python", "/app/scripts/query_ollama.py"]
