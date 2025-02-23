@@ -1,0 +1,6 @@
+pandas
+openpyxl
+langchain
+chromadb
+ollama
+python-dotenv
